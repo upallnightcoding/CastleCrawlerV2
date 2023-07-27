@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: GameData
   m_EditorClassIdentifier: 
   width: 10
-  hieght: 10
+  height: 10
+  gameLevel: 5
   listOfMoves:
   - N
   - S
@@ -31,3 +32,4 @@ MonoBehaviour:
   - ES
   - WN
   - WS
+  TileGreen: {fileID: 2100000, guid: a4a2ca0af3e46dc4d869ce5be1cfb68d, type: 2}

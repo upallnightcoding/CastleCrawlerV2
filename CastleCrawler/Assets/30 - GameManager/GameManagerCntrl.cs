@@ -14,6 +14,6 @@ public class GameManagerCntrl : MonoBehaviour
 
     public void StartNewGame()
     {
-        boardCntrl.CreateBoard();
+        boardCntrl.StartNewGame();
     }
 }

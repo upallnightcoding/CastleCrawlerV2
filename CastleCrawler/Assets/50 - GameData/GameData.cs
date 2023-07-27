@@ -15,8 +15,12 @@ public class GameData : ScriptableObject
 
     [Header("Game Attributes")]
     public int width;
-    public int hieght;
+    public int height;
+    public int gameLevel;
 
     [Header("Moves")]
     public string[] listOfMoves;
+
+    [Header("Materials")]
+    public Material TileGreen;
 }

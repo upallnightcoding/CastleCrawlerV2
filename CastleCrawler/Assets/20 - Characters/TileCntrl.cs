@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TileCntrl : MonoBehaviour
 {
-    
+    [SerializeField] GameData gameData;
 
     private TileState state = TileState.OPEN;
 
@@ -18,6 +18,11 @@ public class TileCntrl : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetStartingTile()
+    {
+        GetComponent<Renderer>().material = gameData.TileGreen;
     }
 
     private enum TileState
