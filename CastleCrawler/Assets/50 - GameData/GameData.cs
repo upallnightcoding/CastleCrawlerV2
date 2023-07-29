@@ -14,13 +14,16 @@ public class GameData : ScriptableObject
     public Vector3 GetTilePos(int x, int z) => new Vector3(x, 0.0f, z);
 
     [Header("Game Attributes")]
-    public int width;
-    public int height;
-    public int gameLevel;
+    public static int width = 10;
+    public static int height = 10;
+    public int level;
 
     [Header("Moves")]
     public string[] listOfMoves;
 
     [Header("Materials")]
     public Material TileGreen;
+    public Material TileWhite;
+    public Material TileGray;
+    public Material TileRed;
 }

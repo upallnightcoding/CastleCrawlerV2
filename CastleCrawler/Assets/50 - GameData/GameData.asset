@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 207744b42e8f1dc40981c54dc5e74ea2, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  width: 10
-  height: 10
-  gameLevel: 5
+  level: 6
   listOfMoves:
   - N
   - S
@@ -33,3 +31,6 @@ MonoBehaviour:
   - WN
   - WS
   TileGreen: {fileID: 2100000, guid: a4a2ca0af3e46dc4d869ce5be1cfb68d, type: 2}
+  TileWhite: {fileID: 2100000, guid: 7ffe83ae77f46c44680da88f10adfe9d, type: 2}
+  TileGray: {fileID: 2100000, guid: 608a00b1ca0b8534a88670a8e34e9fc6, type: 2}
+  TileRed: {fileID: 2100000, guid: ff01b8636946b72478cd4e249e70fa92, type: 2}

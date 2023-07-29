@@ -8,85 +8,124 @@ public class BoardCntrl : MonoBehaviour
     [SerializeField] GameObject tilePreFab;
     [SerializeField] Transform parent;
 
-    private TileCntrl[,] tileCntrls;
+    private Dictionary<string, Move> moveDictionary = null;
 
-    private TileCntrl startPosition;
+    //private TileCntrl[,] tileCntrls = null;
+    private TileMngr tileMngr = null;
 
-    void Start()
+    private TilePosition startPosition;
+
+    private int width = 0;
+    private int height = 0;
+
+    public void Initialize()
     {
-        
+        width = GameData.width;
+        height = GameData.height;
+
+        //tileCntrls = new TileCntrl[width, height];
+        moveDictionary = new Dictionary<string, Move>();
+        tileMngr = new TileMngr(gameData);
+
+        foreach (string moveName in gameData.listOfMoves)
+        {
+            moveDictionary.Add(moveName, new Move(moveName));
+        }
     }
 
     public void StartNewGame()
     {
-        Initialize();
         RenderBoard();
         SelectStartingPoint();
-        //CreateAPath();
+        CreateAPath();
     }
 
-    private bool CreateAPath()
+    private void CreateAPath()
     {
-        while(!IsLevelReached())
-        {
-            Move move = SelectAMove();
+        int level = 0;
+        int count = 0;
+        TilePosition finalPosition = null;
+        TilePosition tile = new TilePosition(startPosition);
 
-            if (MoveIsLegal(move))
+        while (BuildingPath(level) && SafeGuard(count))
+        {
+            int[] moves = ShuffleMoves();
+            Move moveFound = null;
+
+            for (int i = 0; (i < gameData.listOfMoves.Length) && (moveFound == null); i++)
             {
-                Track(move);
+                if (moveDictionary.TryGetValue(gameData.listOfMoves[moves[i]], out Move move))
+                {
+                    finalPosition = move.IsValid(tile, tileMngr);
+
+                    if (finalPosition != null)
+                    {
+                        move.Log("*** Selected Move");
+                        moveFound = move;
+                        tile = new TilePosition(finalPosition);
+                        level++;
+                    }
+                }
             }
+
+            count++;
         }
 
-        return (IsLevelReached());
+        tileMngr.SetEndingTile(finalPosition);
     }
 
-    private void Track(Move move)
+    private bool SafeGuard(int count)
     {
-        
+        return (count < 500);
     }
 
-    private bool IsLevelReached()
+    private int[] ShuffleMoves()
     {
-        return (false);
+        int[] moves = new int[gameData.listOfMoves.Length];
+
+        for (int i = 0; i < gameData.listOfMoves.Length; i++)
+        {
+            moves[i] = i;
+        }
+
+        for (int i = 0; i < gameData.listOfMoves.Length / 2; i++)
+        {
+            int indexA = Random.Range(0, gameData.listOfMoves.Length);
+            int indexB = Random.Range(0, gameData.listOfMoves.Length);
+
+            int value = moves[indexA];
+            moves[indexA] = moves[indexB];
+            moves[indexB] = value;
+        }
+
+        return (moves);
     }
 
-    private bool MoveIsLegal(Move move)
+    private bool BuildingPath(int level)
     {
-        return (false);
-    }
-
-    private Move SelectAMove()
-    {
-        return (null);
-    }
-
-    private void Initialize()
-    {
-        tileCntrls = new TileCntrl[gameData.width, gameData.height];
+        return (level < gameData.level);
     }
 
     private void RenderBoard()
     {
-        int width = gameData.width;
-        int height = gameData.height;
-
         for (int col = 0; col < width; col++)
         {
             for (int row = 0; row < height; row++)
             {
                 Vector3 position = gameData.GetTilePos(col, row);
                 GameObject tile = Instantiate(tilePreFab, position, Quaternion.identity, parent);
-                tileCntrls[col, row] = tile.GetComponent<TileCntrl>();
+                tileMngr.Set(col, row, tile);
             }
         }
     }
 
     private void SelectStartingPoint()
     {
-        int startCol = Random.Range(0, gameData.width);
-        int startRow = Random.Range(0, gameData.height);
+        int col = Random.Range(0, width);
+        int row = Random.Range(0, height);
 
-        startPosition = tileCntrls[startCol, startRow];
-        startPosition.SetStartingTile();
+        startPosition = new TilePosition(col, row);
+
+        tileMngr.SetStartingTile(startPosition);
     }
 }
