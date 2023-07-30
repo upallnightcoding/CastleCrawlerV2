@@ -3,12 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileMngr 
+public class TileMngr : MonoBehaviour
 {
     private TileCntrl[,] tileCntrls = null;
 
-    public TileMngr(GameData gameData)
+    private Stack<GameObject> tileObjects;
+
+    public void Initialize()
     {
+        if ((tileObjects != null) && (tileObjects.Count > 0))
+        {
+            foreach(GameObject tile in tileObjects)
+            {
+                Destroy(tile); 
+            }
+        }
+
+        tileObjects = new Stack<GameObject>();
         tileCntrls = new TileCntrl[GameData.width, GameData.height];
     }
 

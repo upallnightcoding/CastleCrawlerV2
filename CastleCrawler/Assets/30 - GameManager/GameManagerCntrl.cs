@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManagerCntrl : MonoBehaviour
 {
     [SerializeField] BoardCntrl boardCntrl;
+    [SerializeField] UiCntrl uiCntrl;
 
     // Start is called before the first frame update
     void Start()
@@ -14,6 +15,8 @@ public class GameManagerCntrl : MonoBehaviour
 
     public void StartNewGame()
     {
-        boardCntrl.StartNewGame();
+        Stack<Move> moves = boardCntrl.StartNewGame();
+
+        uiCntrl.StartNewGame(moves);
     }
 }

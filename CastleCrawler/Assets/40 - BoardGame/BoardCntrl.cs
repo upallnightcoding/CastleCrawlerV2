@@ -7,54 +7,54 @@ public class BoardCntrl : MonoBehaviour
     [SerializeField] GameData gameData;
     [SerializeField] GameObject tilePreFab;
     [SerializeField] Transform parent;
+    [SerializeField] TileMngr tileMngr;
 
     private Dictionary<string, Move> moveDictionary = null;
-
-    //private TileCntrl[,] tileCntrls = null;
-    private TileMngr tileMngr = null;
 
     private TilePosition startPosition;
 
     private int width = 0;
     private int height = 0;
 
+    private bool SafeGuard(int count) => count < gameData.safeGuardLimit;
+    private bool BuildingPath(int level) => level < gameData.level;
+
     public void Initialize()
     {
         width = GameData.width;
         height = GameData.height;
 
-        //tileCntrls = new TileCntrl[width, height];
         moveDictionary = new Dictionary<string, Move>();
-        tileMngr = new TileMngr(gameData);
-
+        
         foreach (string moveName in gameData.listOfMoves)
         {
             moveDictionary.Add(moveName, new Move(moveName));
         }
     }
 
-    public void StartNewGame()
+    public Stack<Move> StartNewGame()
     {
         RenderBoard();
         SelectStartingPoint();
-        CreateAPath();
+        return(CreateAPath());
     }
 
-    private void CreateAPath()
+    private Stack<Move> CreateAPath()
     {
         int level = 0;
         int count = 0;
         TilePosition finalPosition = null;
         TilePosition tile = new TilePosition(startPosition);
+        Stack<Move> moves = new Stack<Move>();
 
         while (BuildingPath(level) && SafeGuard(count))
         {
-            int[] moves = ShuffleMoves();
+            int[] moveIndex = ShuffleMoves();
             Move moveFound = null;
 
             for (int i = 0; (i < gameData.listOfMoves.Length) && (moveFound == null); i++)
             {
-                if (moveDictionary.TryGetValue(gameData.listOfMoves[moves[i]], out Move move))
+                if (moveDictionary.TryGetValue(gameData.listOfMoves[moveIndex[i]], out Move move))
                 {
                     finalPosition = move.IsValid(tile, tileMngr);
 
@@ -62,6 +62,7 @@ public class BoardCntrl : MonoBehaviour
                     {
                         move.Log("*** Selected Move");
                         moveFound = move;
+                        moves.Push(move);
                         tile = new TilePosition(finalPosition);
                         level++;
                     }
@@ -72,11 +73,8 @@ public class BoardCntrl : MonoBehaviour
         }
 
         tileMngr.SetEndingTile(finalPosition);
-    }
 
-    private bool SafeGuard(int count)
-    {
-        return (count < 500);
+        return (moves);
     }
 
     private int[] ShuffleMoves()
@@ -101,13 +99,10 @@ public class BoardCntrl : MonoBehaviour
         return (moves);
     }
 
-    private bool BuildingPath(int level)
-    {
-        return (level < gameData.level);
-    }
-
     private void RenderBoard()
     {
+        tileMngr.Initialize();
+
         for (int col = 0; col < width; col++)
         {
             for (int row = 0; row < height; row++)

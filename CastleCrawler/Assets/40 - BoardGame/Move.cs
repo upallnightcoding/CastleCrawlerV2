@@ -5,11 +5,12 @@ using UnityEngine;
 public class Move 
 {
     private Step[] move = null;
-    private string moveName = null;
+    public string moveName = null;
 
     public Move(string moveName)
     {
         this.moveName = moveName;
+
         move = new Step[moveName.Length];
 
         for (int character = 0; character < moveName.Length; character++)

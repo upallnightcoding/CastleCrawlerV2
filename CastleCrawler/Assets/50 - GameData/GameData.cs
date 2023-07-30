@@ -17,6 +17,7 @@ public class GameData : ScriptableObject
     public static int width = 10;
     public static int height = 10;
     public int level;
+    public int safeGuardLimit;
 
     [Header("Moves")]
     public string[] listOfMoves;
@@ -26,4 +27,6 @@ public class GameData : ScriptableObject
     public Material TileWhite;
     public Material TileGray;
     public Material TileRed;
+
+    public Sprite[] btnColors;
 }
