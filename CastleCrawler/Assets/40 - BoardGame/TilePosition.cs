@@ -18,9 +18,11 @@ public class TilePosition
 
     }
 
-    public TilePosition MoveToNextTile(Step step)
+    public void MoveToNextTile(Step step, bool direction = true)
     {
-        return (new TilePosition(col + step.col, row + step.row));
+        col += step.col * (direction ? 1 : -1);
+        row += step.row * (direction ? 1 : -1);
+        //return (new TilePosition(col + step.col, row + step.row));
     }
 
     public bool IsValid()

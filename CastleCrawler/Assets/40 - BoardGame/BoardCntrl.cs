@@ -13,8 +13,12 @@ public class BoardCntrl : MonoBehaviour
 
     private TilePosition startPosition;
 
+    private TilePosition currentPlayPos;
+
     private int width = 0;
     private int height = 0;
+
+    private Stack<string> moveStack;
 
     private bool SafeGuard(int count) => count < gameData.safeGuardLimit;
     private bool BuildingPath(int level) => level < gameData.level;
@@ -25,7 +29,8 @@ public class BoardCntrl : MonoBehaviour
         height = GameData.height;
 
         moveDictionary = new Dictionary<string, Move>();
-        
+        moveStack = new Stack<string>();
+
         foreach (string moveName in gameData.listOfMoves)
         {
             moveDictionary.Add(moveName, new Move(moveName));
@@ -37,6 +42,65 @@ public class BoardCntrl : MonoBehaviour
         RenderBoard();
         SelectStartingPoint();
         return(CreateAPath());
+    }
+
+    public void OnPlayerMove(string moveName, Sprite color)
+    {
+        for (int character = 0; character < moveName.Length; character++)
+        {
+            switch (moveName.Substring(character, 1))
+            {
+                case "N":
+                    currentPlayPos.MoveToNextTile(GameData.NORTH_STEP);
+                    break;
+                case "S":
+                    currentPlayPos.MoveToNextTile(GameData.SOUTH_STEP);
+                    break;
+                case "E":
+                    currentPlayPos.MoveToNextTile(GameData.EAST_STEP);
+                    break;
+                case "W":
+                    currentPlayPos.MoveToNextTile(GameData.WEST_STEP);
+                    break;
+            }
+
+            tileMngr.SetMove(currentPlayPos, color);
+        }
+
+        moveStack.Push(moveName);
+    }
+
+    public string UndoPlayerMove()
+    {
+        string moveName = null;
+
+        if (moveStack.Count > 0)
+        {
+            moveName = moveStack.Pop();
+
+            for (int character = moveName.Length - 1; character >= 0; character--)
+            {
+                tileMngr.ResetTile(currentPlayPos);
+
+                switch (moveName.Substring(character, 1))
+                {
+                    case "N":
+                        currentPlayPos.MoveToNextTile(GameData.NORTH_STEP, false);
+                        break;
+                    case "S":
+                        currentPlayPos.MoveToNextTile(GameData.SOUTH_STEP, false);
+                        break;
+                    case "E":
+                        currentPlayPos.MoveToNextTile(GameData.EAST_STEP, false);
+                        break;
+                    case "W":
+                        currentPlayPos.MoveToNextTile(GameData.WEST_STEP, false);
+                        break;
+                }
+            }
+        } 
+
+        return (moveName);
     }
 
     private Stack<Move> CreateAPath()
@@ -73,6 +137,8 @@ public class BoardCntrl : MonoBehaviour
         }
 
         tileMngr.SetEndingTile(finalPosition);
+
+        currentPlayPos = new TilePosition(startPosition);
 
         return (moves);
     }

@@ -48,7 +48,7 @@ public class Move
 
         for (int i = 0; (i < move.Length) && valid; i++)
         {
-            nextTile = nextTile.MoveToNextTile(move[i]);
+            nextTile.MoveToNextTile(move[i]);
             nextTile.Log("Test Next Tile");
 
             valid = (nextTile.IsValid() && tileMgr.IsOpen(nextTile));
@@ -56,7 +56,7 @@ public class Move
             if (valid)
             {
                 tileMgr.SetTileAsVisted(nextTile);
-                tracking.Push(nextTile);
+                tracking.Push(new TilePosition(nextTile));
             } 
         }
 

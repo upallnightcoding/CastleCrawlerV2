@@ -9,7 +9,7 @@ public class UiCntrl : MonoBehaviour
     [SerializeField] GameObject dirBtnPreFab;
     [SerializeField] GameData gameData;
 
-    private Dictionary<string, int> moveCount;
+    private Dictionary<string, DirBtnCntrl> durBtnDict;
 
     void Start()
     {
@@ -19,27 +19,45 @@ public class UiCntrl : MonoBehaviour
     // Update is called once per frame
     public void StartNewGame(Stack<Move> moves)
     {
-        moveCount = new Dictionary<string, int>();
+        Dictionary<string, int> moveCntDict = new Dictionary<string, int>();
+        durBtnDict = new Dictionary<string, DirBtnCntrl>();
 
         foreach(Move move in moves)
         {
-            if (moveCount.TryGetValue(move.moveName, out int count))
+            if (moveCntDict.TryGetValue(move.moveName, out int count))
             {
-                moveCount[move.moveName] = ++count;
+                moveCntDict[move.moveName] = ++count;
             } else {
-                moveCount[move.moveName] = 1;
+                moveCntDict[move.moveName] = 1;
             }
         }
 
         int colorIndex = 0;
 
-        foreach (string moveName in moveCount.Keys)
+        foreach (string moveName in moveCntDict.Keys)
         {
-            int count = moveCount[moveName];
+            int count = moveCntDict[moveName];
 
             GameObject button = Object.Instantiate(dirBtnPreFab, directionButtons);
             DirBtnCntrl dirBtnCntrl = button.GetComponent<DirBtnCntrl>();
             dirBtnCntrl.Initialize(moveName, gameData.btnColors[colorIndex++], count);
+
+            durBtnDict[moveName] = dirBtnCntrl;
         }
+    }
+
+    public void OnPlayerMove(string moveName)
+    {
+        durBtnDict[moveName].OnDirectionClick();
+    }
+
+    public bool IsDirBtnEnabled(string moveName)
+    {
+        return (durBtnDict[moveName].IsDirBtnEnabled());
+    }
+
+    public void UndoPlayerMove(string moveName)
+    {
+        durBtnDict[moveName].UndoPlayerMove();
     }
 }

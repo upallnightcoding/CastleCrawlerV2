@@ -52,7 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   directionTxt: {fileID: 6846398666935746908}
   countTxt: {fileID: 7151492706692036108}
-  buttonDisabled: {fileID: 0}
+  buttonDisabled: {fileID: 21300000, guid: 6f2505aafe1be4eebaef05cf00b2966a, type: 3}
   image: {fileID: 6846398665966197440}
 --- !u!1001 &4723699225768802543
 PrefabInstance:

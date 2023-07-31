@@ -11,8 +11,8 @@ public class CmdBtnCntrl : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void StartNewGame()
     {
-        
+        GameManagerCntrl.Instance.StartNewGame();
     }
 }

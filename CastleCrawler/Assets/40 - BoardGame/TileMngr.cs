@@ -45,13 +45,15 @@ public class TileMngr : MonoBehaviour
         tileCntrls[position.col, position.row].SetTileAsVisted();
     }
 
-    public void ResetTile(TilePosition position)
+    public void SetMove(TilePosition position, Sprite color)
     {
-        tileCntrls[position.col, position.row].ResetTile();
+        Debug.Log($"Color2: {color}");
+        tileCntrls[position.col, position.row].SetMove(color);
     }
 
-    public void SetEndingTile(TilePosition position)
-    {
+    public void ResetTile(TilePosition position) =>
+        tileCntrls[position.col, position.row].ResetTile();
+
+    public void SetEndingTile(TilePosition position) =>
         tileCntrls[position.col, position.row].SetEndingTile();
-    }
 }

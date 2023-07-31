@@ -22,26 +22,33 @@ public class TileCntrl : MonoBehaviour
 
     public void SetStartingTile()
     {
-        GetComponent<Renderer>().material = gameData.TileGreen;
         state = TileState.VISTED;
+        GetComponent<Renderer>().material = gameData.TileGreen;
     }
 
     public void SetEndingTile()
     {
-        GetComponent<Renderer>().material = gameData.TileRed;
         state = TileState.VISTED;
+        GetComponent<Renderer>().material = gameData.TileRed;
     }
 
     public void SetTileAsVisted()
     {
-        GetComponent<Renderer>().material = gameData.TileWhite;
         state = TileState.VISTED;
+        GetComponent<Renderer>().material = gameData.TileWhite;
     }
 
     public void ResetTile()
     {
         state = TileState.OPEN;
         GetComponent<Renderer>().material = gameData.TileGray;
+    }
+
+    public void SetMove(Sprite color)
+    {
+        state = TileState.MOVE;
+        //GetComponent<Renderer>().material.color = Color.cyan;
+        GetComponent<Renderer>().material.mainTexture = color.texture;
     }
 
     public bool IsOpen()
@@ -52,6 +59,7 @@ public class TileCntrl : MonoBehaviour
     private enum TileState
     {
         OPEN,
-        VISTED
+        VISTED,
+        MOVE
     }
 }
