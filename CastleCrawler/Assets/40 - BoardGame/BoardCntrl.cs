@@ -12,6 +12,7 @@ public class BoardCntrl : MonoBehaviour
     private Dictionary<string, Move> moveDictionary = null;
 
     private TilePosition startPosition;
+    private TilePosition finalPosition;
 
     private TilePosition currentPlayPos;
 
@@ -107,7 +108,6 @@ public class BoardCntrl : MonoBehaviour
     {
         int level = 0;
         int count = 0;
-        TilePosition finalPosition = null;
         TilePosition tile = new TilePosition(startPosition);
         Stack<Move> moves = new Stack<Move>();
 

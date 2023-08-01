@@ -35,21 +35,18 @@ public class DirBtnCntrl : MonoBehaviour
             if (count == 0)
             {
                 enabledBtn = false;
-                image.sprite = buttonDisabled;
+                //image.sprite = buttonDisabled;
             }
         }
     }
 
-    public bool IsDirBtnEnabled()
-    {
-        return (enabledBtn);
-    }
+    public bool IsDirBtnEnabled() => enabledBtn;
 
     public void UndoPlayerMove()
     {
         if (count == 0)
         {
-            image.sprite = originalColor;
+            //image.sprite = originalColor;
             enabledBtn = true;
         }
 
