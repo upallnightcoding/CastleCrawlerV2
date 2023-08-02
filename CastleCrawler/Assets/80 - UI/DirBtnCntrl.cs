@@ -21,6 +21,10 @@ public class DirBtnCntrl : MonoBehaviour
         
     }
 
+    public bool IsDirBtnEnabled() => enabledBtn;
+
+    public int GetCount() => count;
+
     public void OnPlayerMove()
     {
         GameManagerCntrl.Instance.OnPlayerMove(directionTxt.text, image.sprite);
@@ -39,8 +43,6 @@ public class DirBtnCntrl : MonoBehaviour
             }
         }
     }
-
-    public bool IsDirBtnEnabled() => enabledBtn;
 
     public void UndoPlayerMove()
     {

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 207744b42e8f1dc40981c54dc5e74ea2, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  level: 3
+  level: 2
   safeGuardLimit: 500
   listOfMoves:
   - N

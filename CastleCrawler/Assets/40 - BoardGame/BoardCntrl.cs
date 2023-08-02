@@ -104,6 +104,11 @@ public class BoardCntrl : MonoBehaviour
         return (moveName);
     }
 
+    public bool IsFinished()
+    {
+        return (currentPlayPos.IsEqual(finalPosition));
+    }
+
     private Stack<Move> CreateAPath()
     {
         int level = 0;

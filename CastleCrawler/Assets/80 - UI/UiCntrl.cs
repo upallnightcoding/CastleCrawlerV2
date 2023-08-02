@@ -2,25 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.UI;
+using TMPro;
+using UnityEngine.UI;
 
 public class UiCntrl : MonoBehaviour
 {
-    [SerializeField] Transform directionButtons;
-    [SerializeField] GameObject dirBtnPreFab;
-    [SerializeField] GameData gameData;
+    [SerializeField] private Transform directionButtons;
+    [SerializeField] private GameObject dirBtnPreFab;
+    [SerializeField] private GameData gameData;
+    [SerializeField] private GameObject winFlag;
+    [SerializeField] private GameObject loseFlag;
+    [SerializeField] private TMP_Text levelCntText;
+    [SerializeField] private Image star1On;
+    [SerializeField] private Image star2On;
+    [SerializeField] private Image star3On;
 
-    private Dictionary<string, DirBtnCntrl> durBtnDict;
+    private Dictionary<string, DirBtnCntrl> dirBtnDict;
+
+    private int starCnt = 0;
+    private int levelCnt = 0;
 
     void Start()
     {
-        
+        winFlag.SetActive(false);
+        loseFlag.SetActive(false);
+        levelCntText.text = gameData.level.ToString();
+        levelCnt = gameData.level;
     }
 
     // Update is called once per frame
     public void StartNewGame(Stack<Move> moves)
     {
         Dictionary<string, int> moveCntDict = new Dictionary<string, int>();
-        durBtnDict = new Dictionary<string, DirBtnCntrl>();
+        dirBtnDict = new Dictionary<string, DirBtnCntrl>();
 
         foreach(Move move in moves)
         {
@@ -42,22 +56,71 @@ public class UiCntrl : MonoBehaviour
             DirBtnCntrl dirBtnCntrl = button.GetComponent<DirBtnCntrl>();
             dirBtnCntrl.Initialize(moveName, gameData.btnColors[colorIndex++], count);
 
-            durBtnDict[moveName] = dirBtnCntrl;
+            dirBtnDict[moveName] = dirBtnCntrl;
         }
+    }
+
+    public bool TotalPointsIsZero()
+    {
+        int total = 0;
+
+        foreach (string move in dirBtnDict.Keys)
+        {
+            DirBtnCntrl dirBtnCntrl = dirBtnDict[move];
+
+            total += dirBtnCntrl.GetCount();
+        }
+
+        return (total == 0);
+    }
+
+    public void TriggerWin()
+    {
+        winFlag.SetActive(true);
+
+        UpdateLevel();
     }
 
     public void OnPlayerMove(string moveName)
     {
-        durBtnDict[moveName].OnDirectionClick();
+        dirBtnDict[moveName].OnDirectionClick();
     }
 
     public bool IsDirBtnEnabled(string moveName)
     {
-        return (durBtnDict[moveName].IsDirBtnEnabled());
+        return (dirBtnDict[moveName].IsDirBtnEnabled());
     }
 
     public void UndoPlayerMove(string moveName)
     {
-        durBtnDict[moveName].UndoPlayerMove();
+        dirBtnDict[moveName].UndoPlayerMove();
+    }
+
+    private void UpdateLevel()
+    {
+        if (++starCnt > 3)
+        {
+            starCnt = 0;
+            levelCnt++;
+
+            star1On.enabled = false;
+            star2On.enabled = false;
+            star3On.enabled = false;
+        }
+
+        levelCntText.text = levelCnt.ToString();
+
+        switch(starCnt)
+        {
+            case 1:
+                star1On.enabled = true;
+                break;
+            case 2:
+                star2On.enabled = true;
+                break;
+            case 3:
+                star3On.enabled = true;
+                break;
+        }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TilePosition 
+public class TilePosition
 {
     public int col = 0;
     public int row = 0;
@@ -22,7 +22,6 @@ public class TilePosition
     {
         col += step.col * (direction ? 1 : -1);
         row += step.row * (direction ? 1 : -1);
-        //return (new TilePosition(col + step.col, row + step.row));
     }
 
     public bool IsValid()
@@ -31,6 +30,11 @@ public class TilePosition
         bool rowPos = (row >= 0) && (row < GameData.height);
 
         return (colPos && rowPos);
+    }
+
+    public bool IsEqual(TilePosition tile)
+    {
+        return ((tile.col == col) && (tile.row == row));
     }
 
     public void Log(string text)

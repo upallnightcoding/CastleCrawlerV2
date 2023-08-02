@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class GameManagerCntrl : MonoBehaviour
 {
+    [SerializeField] GameData gameData;
     [SerializeField] BoardCntrl boardCntrl;
     [SerializeField] UiCntrl uiCntrl;
 
     public static GameManagerCntrl Instance = null;
+
+    private bool displayPath = false;
 
     public void Awake()
     {
@@ -33,12 +36,27 @@ public class GameManagerCntrl : MonoBehaviour
         uiCntrl.StartNewGame(moves);
     }
 
+    public void TogglePath()
+    {
+        displayPath = !displayPath;
+    }
+
+    public Material DisplayTileMaterial()
+    {
+        return (displayPath ? gameData.TileWhite : gameData.TileGray);
+    }
+
     public void OnPlayerMove(string move, Sprite color)
     {
         if (uiCntrl.IsDirBtnEnabled(move))
         {
             boardCntrl.OnPlayerMove(move, color);
             uiCntrl.OnPlayerMove(move);
+
+            if (boardCntrl.IsFinished() && uiCntrl.TotalPointsIsZero())
+            {
+                uiCntrl.TriggerWin();
+            }
         }
     }
 

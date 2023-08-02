@@ -35,7 +35,7 @@ public class TileCntrl : MonoBehaviour
     public void SetTileAsVisted()
     {
         state = TileState.VISTED;
-        GetComponent<Renderer>().material = gameData.TileWhite;
+        GetComponent<Renderer>().material = GameManagerCntrl.Instance.DisplayTileMaterial();
     }
 
     public void ResetTile()

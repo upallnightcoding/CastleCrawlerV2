@@ -15,4 +15,9 @@ public class CmdBtnCntrl : MonoBehaviour
     {
         GameManagerCntrl.Instance.StartNewGame();
     }
+
+    public void TogglePath()
+    {
+        GameManagerCntrl.Instance.TogglePath();
+    }
 }
