@@ -10,11 +10,13 @@ public class DirBtnCntrl : MonoBehaviour
     [SerializeField] private TMP_Text countTxt;
     [SerializeField] private Sprite buttonDisabled;
     [SerializeField] private Image image;
+    [SerializeField] private GameData gameData;
 
     //private Sprite originalColor;
     private int count;
     private bool enabledBtn = true;
-    private Sprite originalColor = null;
+    private Material originalColor = null;
+    private int colorIndex;
 
     void Start()
     {
@@ -27,7 +29,7 @@ public class DirBtnCntrl : MonoBehaviour
 
     public void OnPlayerMove()
     {
-        GameManagerCntrl.Instance.OnPlayerMove(directionTxt.text, image.sprite);
+        GameManagerCntrl.Instance.OnPlayerMove(directionTxt.text, gameData.tileMaterial[colorIndex]);
     }
 
     public void OnDirectionClick()
@@ -55,16 +57,18 @@ public class DirBtnCntrl : MonoBehaviour
         countTxt.text = (++count).ToString();
     }
 
-    public void Initialize(string direction, Sprite color, int count)
+    public void Initialize(string direction, int colorIndex, int count)
     {
         // Set the button text
         directionTxt.text = direction;
 
+        this.colorIndex = colorIndex;
+
         // Set the sprite of the button image
-        image.sprite = color;
+        image.sprite = gameData.btnSprite[colorIndex];
 
         // Cash the original sprite
-        originalColor = color;
+        originalColor = gameData.tileMaterial[colorIndex];
 
         // Initialize the count of this direction
         countTxt.text = count.ToString();

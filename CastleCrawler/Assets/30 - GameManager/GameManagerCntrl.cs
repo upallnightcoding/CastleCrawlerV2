@@ -46,7 +46,7 @@ public class GameManagerCntrl : MonoBehaviour
         return (displayPath ? gameData.TileWhite : gameData.TileGray);
     }
 
-    public void OnPlayerMove(string move, Sprite color)
+    public void OnPlayerMove(string move, Material color)
     {
         if (uiCntrl.IsDirBtnEnabled(move))
         {

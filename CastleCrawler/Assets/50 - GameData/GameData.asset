@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 207744b42e8f1dc40981c54dc5e74ea2, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  level: 2
+  level: 7
   safeGuardLimit: 500
   listOfMoves:
   - N
@@ -43,7 +43,7 @@ MonoBehaviour:
   TileWhite: {fileID: 2100000, guid: 7ffe83ae77f46c44680da88f10adfe9d, type: 2}
   TileGray: {fileID: 2100000, guid: 608a00b1ca0b8534a88670a8e34e9fc6, type: 2}
   TileRed: {fileID: 2100000, guid: ff01b8636946b72478cd4e249e70fa92, type: 2}
-  btnColors:
+  btnSprite:
   - {fileID: 21300000, guid: 6900647849bf74c2daec9082ae11cc1c, type: 3}
   - {fileID: 21300000, guid: 68b35d2059b8c46e0a98e53628e9b3af, type: 3}
   - {fileID: 21300000, guid: ae9f8677ca3c24a7c80d7217a941f886, type: 3}
@@ -53,3 +53,13 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 19a745caa897a41759d4b8b5d0b482f2, type: 3}
   - {fileID: 21300000, guid: 8c291789626564f05ab21623737d19dd, type: 3}
   - {fileID: 21300000, guid: 2dd4604925f264cb1990818641361190, type: 3}
+  tileMaterial:
+  - {fileID: 2100000, guid: dbdbcef10be668c498f6527082e248ae, type: 2}
+  - {fileID: 2100000, guid: b5f7e9001ea377944bd2d2d102a6ef1c, type: 2}
+  - {fileID: 2100000, guid: f426180bdf9744642925c975471be11d, type: 2}
+  - {fileID: 2100000, guid: 2486e422a15534748acf7d3bbe3ac1c4, type: 2}
+  - {fileID: 2100000, guid: ff01b8636946b72478cd4e249e70fa92, type: 2}
+  - {fileID: 2100000, guid: a4a2ca0af3e46dc4d869ce5be1cfb68d, type: 2}
+  - {fileID: 2100000, guid: cd6beb22fa10e8441b8c5343f7a5142a, type: 2}
+  - {fileID: 2100000, guid: 5e0c2ff8ccd32794fbd5e02574f6c080, type: 2}
+  - {fileID: 2100000, guid: 5971f251476d07a4ead517498b3cb6ab, type: 2}

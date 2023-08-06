@@ -7,7 +7,13 @@ public class TileMngr : MonoBehaviour
 {
     private TileCntrl[,] tileCntrls = null;
 
-    private Stack<GameObject> tileObjects;
+    private List<GameObject> tileObjects;
+
+    public void Start()
+    {
+        tileObjects = new List<GameObject>();
+        tileCntrls = new TileCntrl[GameData.width, GameData.height];
+    }
 
     public void Initialize()
     {
@@ -18,14 +24,13 @@ public class TileMngr : MonoBehaviour
                 Destroy(tile); 
             }
         }
-
-        tileObjects = new Stack<GameObject>();
-        tileCntrls = new TileCntrl[GameData.width, GameData.height];
     }
 
     public void Set(int col, int row, GameObject tile)
     {
         tileCntrls[col, row] = tile.GetComponent<TileCntrl>();
+
+        tileObjects.Add(tile);
 
         ResetTile(new TilePosition(col, row));
     }
@@ -45,7 +50,7 @@ public class TileMngr : MonoBehaviour
         tileCntrls[position.col, position.row].SetTileAsVisted();
     }
 
-    public void SetMove(TilePosition position, Sprite color)
+    public void SetMove(TilePosition position, Material color)
     {
         Debug.Log($"Color2: {color}");
         tileCntrls[position.col, position.row].SetMove(color);

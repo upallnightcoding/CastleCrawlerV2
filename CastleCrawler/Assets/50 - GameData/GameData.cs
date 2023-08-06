@@ -28,5 +28,6 @@ public class GameData : ScriptableObject
     public Material TileGray;
     public Material TileRed;
 
-    public Sprite[] btnColors;
+    public Sprite[] btnSprite;
+    public Material[] tileMaterial;
 }

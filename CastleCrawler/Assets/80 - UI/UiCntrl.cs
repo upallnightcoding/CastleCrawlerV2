@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class UiCntrl : MonoBehaviour
 {
-    [SerializeField] private Transform directionButtons;
+    [SerializeField] private Transform dirBtnContainer;
     [SerializeField] private GameObject dirBtnPreFab;
     [SerializeField] private GameData gameData;
     [SerializeField] private GameObject winFlag;
@@ -19,6 +19,8 @@ public class UiCntrl : MonoBehaviour
 
     private Dictionary<string, DirBtnCntrl> dirBtnDict;
 
+    private List<GameObject> listOfDirBtns = null;
+
     private int starCnt = 0;
     private int levelCnt = 0;
 
@@ -28,6 +30,8 @@ public class UiCntrl : MonoBehaviour
         loseFlag.SetActive(false);
         levelCntText.text = gameData.level.ToString();
         levelCnt = gameData.level;
+
+        listOfDirBtns = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -35,6 +39,11 @@ public class UiCntrl : MonoBehaviour
     {
         Dictionary<string, int> moveCntDict = new Dictionary<string, int>();
         dirBtnDict = new Dictionary<string, DirBtnCntrl>();
+
+        foreach(GameObject go in listOfDirBtns)
+        {
+            Destroy(go);
+        }
 
         foreach(Move move in moves)
         {
@@ -52,11 +61,13 @@ public class UiCntrl : MonoBehaviour
         {
             int count = moveCntDict[moveName];
 
-            GameObject button = Object.Instantiate(dirBtnPreFab, directionButtons);
+            GameObject button = Object.Instantiate(dirBtnPreFab, dirBtnContainer);
             DirBtnCntrl dirBtnCntrl = button.GetComponent<DirBtnCntrl>();
-            dirBtnCntrl.Initialize(moveName, gameData.btnColors[colorIndex++], count);
+            dirBtnCntrl.Initialize(moveName, colorIndex++, count);
 
             dirBtnDict[moveName] = dirBtnCntrl;
+
+            listOfDirBtns.Add(button);
         }
     }
 
@@ -76,9 +87,18 @@ public class UiCntrl : MonoBehaviour
 
     public void TriggerWin()
     {
-        winFlag.SetActive(true);
+        StartCoroutine(ShowWinnerFlag());
 
         UpdateLevel();
+    }
+
+    private IEnumerator ShowWinnerFlag()
+    {
+        winFlag.SetActive(true);
+
+        yield return new WaitForSeconds(3);
+
+        winFlag.SetActive(false);
     }
 
     public void OnPlayerMove(string moveName)
@@ -106,6 +126,8 @@ public class UiCntrl : MonoBehaviour
             star1On.enabled = false;
             star2On.enabled = false;
             star3On.enabled = false;
+
+            gameData.level = levelCnt;
         }
 
         levelCntText.text = levelCnt.ToString();

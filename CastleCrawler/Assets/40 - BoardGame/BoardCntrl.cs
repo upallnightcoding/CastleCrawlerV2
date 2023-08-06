@@ -30,7 +30,6 @@ public class BoardCntrl : MonoBehaviour
         height = GameData.height;
 
         moveDictionary = new Dictionary<string, Move>();
-        moveStack = new Stack<string>();
 
         foreach (string moveName in gameData.listOfMoves)
         {
@@ -45,7 +44,7 @@ public class BoardCntrl : MonoBehaviour
         return(CreateAPath());
     }
 
-    public void OnPlayerMove(string moveName, Sprite color)
+    public void OnPlayerMove(string moveName, Material color)
     {
         for (int character = 0; character < moveName.Length; character++)
         {
@@ -172,6 +171,8 @@ public class BoardCntrl : MonoBehaviour
 
     private void RenderBoard()
     {
+        moveStack = new Stack<string>();
+
         tileMngr.Initialize();
 
         for (int col = 0; col < width; col++)

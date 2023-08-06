@@ -44,11 +44,10 @@ public class TileCntrl : MonoBehaviour
         GetComponent<Renderer>().material = gameData.TileGray;
     }
 
-    public void SetMove(Sprite color)
+    public void SetMove(Material color)
     {
         state = TileState.MOVE;
-        //GetComponent<Renderer>().material.color = Color.cyan;
-        GetComponent<Renderer>().material.mainTexture = color.texture;
+        GetComponent<Renderer>().material = color;
     }
 
     public bool IsOpen()

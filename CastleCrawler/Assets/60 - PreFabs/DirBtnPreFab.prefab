@@ -54,6 +54,7 @@ MonoBehaviour:
   countTxt: {fileID: 7151492706692036108}
   buttonDisabled: {fileID: 21300000, guid: 6f2505aafe1be4eebaef05cf00b2966a, type: 3}
   image: {fileID: 6846398665966197440}
+  gameData: {fileID: 11400000, guid: 5ad4da5641fb29449a20f10a24ed2ed1, type: 2}
 --- !u!1001 &4723699225768802543
 PrefabInstance:
   m_ObjectHideFlags: 0
