@@ -41,7 +41,21 @@ public class BoardCntrl : MonoBehaviour
     {
         RenderBoard();
         SelectStartingPoint();
-        return(CreateAPath());
+        Stack<Move> moveStack = CreateAPath();
+        PlaceBombs();
+        return (moveStack);
+    }
+
+    private void PlaceBombs()
+    {
+        int nBombs = 30;
+
+        for (int i = 0; i < nBombs; i++)
+        {
+            TilePosition bombPosition = SelectRandomPoint();
+
+            tileMngr.SetBombTile(bombPosition);
+        }
     }
 
     public void OnPlayerMove(string moveName, Material color)
@@ -80,7 +94,7 @@ public class BoardCntrl : MonoBehaviour
 
             for (int character = moveName.Length - 1; character >= 0; character--)
             {
-                tileMngr.ResetTile(currentPlayPos);
+                tileMngr.UndoTile(currentPlayPos);
 
                 switch (moveName.Substring(character, 1))
                 {
@@ -128,7 +142,6 @@ public class BoardCntrl : MonoBehaviour
 
                     if (finalPosition != null)
                     {
-                        move.Log("*** Selected Move");
                         moveFound = move;
                         moves.Push(move);
                         tile = new TilePosition(finalPosition);
@@ -186,12 +199,17 @@ public class BoardCntrl : MonoBehaviour
         }
     }
 
-    private void SelectStartingPoint()
+    private TilePosition SelectRandomPoint()
     {
         int col = Random.Range(0, width);
         int row = Random.Range(0, height);
 
-        startPosition = new TilePosition(col, row);
+        return (new TilePosition(col, row));
+    }
+
+    private void SelectStartingPoint()
+    {
+        startPosition = SelectRandomPoint();
 
         tileMngr.SetStartingTile(startPosition);
     }

@@ -40,9 +40,14 @@ public class TileMngr : MonoBehaviour
         tileCntrls[position.col, position.row].SetStartingTile();
     }
 
+    public void SetBombTile(TilePosition position)
+    {
+        tileCntrls[position.col, position.row].SetBombTile();
+    }
+
     public bool IsOpen(TilePosition position)
     {
-        return (tileCntrls[position.col, position.row].IsOpen());
+        return (tileCntrls[position.col, position.row].IsTileOpen());
     }
 
     public void SetTileAsVisted(TilePosition position)
@@ -52,12 +57,14 @@ public class TileMngr : MonoBehaviour
 
     public void SetMove(TilePosition position, Material color)
     {
-        Debug.Log($"Color2: {color}");
         tileCntrls[position.col, position.row].SetMove(color);
     }
 
     public void ResetTile(TilePosition position) =>
         tileCntrls[position.col, position.row].ResetTile();
+
+    public void UndoTile(TilePosition position) =>
+       tileCntrls[position.col, position.row].UndoTile();
 
     public void SetEndingTile(TilePosition position) =>
         tileCntrls[position.col, position.row].SetEndingTile();
