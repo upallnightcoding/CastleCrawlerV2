@@ -23,47 +23,32 @@ public class TileCntrl : MonoBehaviour
         
     }
 
-    public void SetOffBomb()
-    {
-        Instantiate(bombFx, gameObject.transform.position, Quaternion.identity);
-    }
-
     public void SetStartingTile()
     {
-        state = TileState.VISTED;
-        GetComponent<Renderer>().material = gameData.TileGreen;
-        tileLabel.text = "Start";
+        SetTile(TileState.START, gameData.StartEndTileColor);
+    }
+
+    public void SetEndingTile()
+    {
+        SetTile(TileState.END, gameData.StartEndTileColor);
     }
 
     public void SetBombTile()
     {
         if (IsTileOpen())
         {
-            state = TileState.BOMB;
-            GetComponent<Renderer>().material = gameData.TileGreen;
-            tileLabel.text = "Bomb";
+            SetTile(TileState.BOMB, gameData.BombTileColor);
         }
-    }
-
-    public void SetEndingTile()
-    {
-        state = TileState.VISTED;
-        GetComponent<Renderer>().material = gameData.TileRed;
-        tileLabel.text = "Ending";
     }
 
     public void SetTileAsVisted()
     {
-        state = TileState.VISTED;
-        GetComponent<Renderer>().material = GameManagerCntrl.Instance.DisplayTileMaterial();
-        tileLabel.text = "Visited";
+        SetTile(TileState.VISITED, GameManagerCntrl.Instance.DisplayTileMaterial());
     }
 
     public void ResetTile()
     {
-        state = TileState.OPEN;
-        GetComponent<Renderer>().material = gameData.TileGray;
-        tileLabel.text = "";
+        SetTile(TileState.OPEN, gameData.TileGray, "");
     }
 
     public void UndoTile()
@@ -72,14 +57,27 @@ public class TileCntrl : MonoBehaviour
         GetComponent<Renderer>().material = gameData.TileGray;
     }
 
-    public void SetMove(Material color)
+    public bool SetMove(Material color)
     {
-        GetComponent<Renderer>().material = color;
+        bool valid = false;
 
-        if (state == TileState.BOMB)
+        switch(state)
         {
-            bombFx.SetActive(true);
+            case TileState.BOMB:
+                Instantiate(bombFx, gameObject.transform.position, Quaternion.identity);
+                GetComponent<Renderer>().material = gameData.TileBlack;
+                break;
+            case TileState.OPEN:
+            case TileState.VISITED:
+                SetTile(TileState.PATH, color);
+                valid = true;
+                break;
+            case TileState.END:
+                valid = true;
+                break;
         }
+
+        return (valid);
     }
 
     public bool IsTileOpen()
@@ -87,10 +85,25 @@ public class TileCntrl : MonoBehaviour
         return (state == TileState.OPEN);
     }
 
+    private void SetTile(TileState tileState, Material material)
+    {
+        SetTile(tileState, material, tileState.ToString());
+    }
+
+    private void SetTile(TileState tileState, Material material, string text)
+    {
+        state = tileState;
+        GetComponent<Renderer>().material = material;
+        tileLabel.text = text;
+    }
+
     private enum TileState
     {
         OPEN,
-        VISTED,
+        START,
+        END,
+        PATH,
+        VISITED,
         BOMB
     }
 }

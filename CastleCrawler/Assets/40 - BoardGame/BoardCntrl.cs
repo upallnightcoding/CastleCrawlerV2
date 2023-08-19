@@ -58,11 +58,15 @@ public class BoardCntrl : MonoBehaviour
         }
     }
 
-    public void OnPlayerMove(string moveName, Material color)
+    public bool OnPlayerMove(string moveName, Material color)
     {
-        for (int character = 0; character < moveName.Length; character++)
+        bool valid = true;
+        Stack<TilePosition> tracking = new Stack<TilePosition>();
+        TilePosition backTrack = new TilePosition(currentPlayPos);
+
+        for (int move = 0; (move < moveName.Length) && valid; move++)
         {
-            switch (moveName.Substring(character, 1))
+            switch (moveName.Substring(move, 1))
             {
                 case "N":
                     currentPlayPos.MoveToNextTile(GameData.NORTH_STEP);
@@ -78,10 +82,29 @@ public class BoardCntrl : MonoBehaviour
                     break;
             }
 
-            tileMngr.SetMove(currentPlayPos, color);
+            valid = tileMngr.SetMove(currentPlayPos, color);
+
+            if (valid)
+            {
+                tracking.Push(currentPlayPos);
+            }
         }
 
-        moveStack.Push(moveName);
+        if (valid)
+        {
+            moveStack.Push(moveName);
+        } 
+        else
+        {
+            currentPlayPos = backTrack;
+
+            foreach (TilePosition position in tracking)
+            {
+                tileMngr.ResetTile(position);
+            }
+        }
+
+        return (valid);
     }
 
     public string UndoPlayerMove()

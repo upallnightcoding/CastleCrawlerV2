@@ -55,9 +55,9 @@ public class TileMngr : MonoBehaviour
         tileCntrls[position.col, position.row].SetTileAsVisted();
     }
 
-    public void SetMove(TilePosition position, Material color)
+    public bool SetMove(TilePosition position, Material color)
     {
-        tileCntrls[position.col, position.row].SetMove(color);
+        return(tileCntrls[position.col, position.row].SetMove(color));
     }
 
     public void ResetTile(TilePosition position) =>

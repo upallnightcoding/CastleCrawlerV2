@@ -43,19 +43,21 @@ public class GameManagerCntrl : MonoBehaviour
 
     public Material DisplayTileMaterial()
     {
-        return (displayPath ? gameData.TileWhite : gameData.TileGray);
+        return (displayPath ? gameData.StartEndTileColor : gameData.TileGray);
     }
 
     public void OnPlayerMove(string move, Material color)
     {
         if (uiCntrl.IsDirBtnEnabled(move))
         {
-            boardCntrl.OnPlayerMove(move, color);
-            uiCntrl.OnPlayerMove(move);
-
-            if (boardCntrl.IsFinished() && uiCntrl.TotalPointsIsZero())
+            if (boardCntrl.OnPlayerMove(move, color))
             {
-                uiCntrl.TriggerWin();
+                uiCntrl.OnPlayerMove(move);
+
+                if (boardCntrl.IsFinished() && uiCntrl.TotalPointsIsZero())
+                {
+                    uiCntrl.TriggerWin();
+                }
             }
         }
     }
