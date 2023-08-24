@@ -13,11 +13,17 @@ public class GameData : ScriptableObject
 
     public Vector3 GetTilePos(int x, int z) => new Vector3(x, 0.0f, z);
 
+    [Header("Tile Images")]
+    public Material bombMaterial;
+    public Material crownMaterial;
+    public Material castelMaterial;
+
     [Header("Game Attributes")]
     public static int width = 10;
     public static int height = 10;
     public int level;
     public int safeGuardLimit;
+    public bool debugSw;
 
     [Header("Moves")]
     public string[] listOfMoves;

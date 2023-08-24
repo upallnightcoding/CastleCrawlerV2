@@ -32,33 +32,26 @@ public class TileMngr : MonoBehaviour
 
         tileObjects.Add(tile);
 
-        ResetTile(new TilePosition(col, row));
+        tileCntrls[col, row].Initialize();
     }
 
-    public void SetStartingTile(TilePosition position)
-    {
+    public void SetStartingTile(TilePosition position) =>
         tileCntrls[position.col, position.row].SetStartingTile();
-    }
 
-    public void SetBombTile(TilePosition position)
-    {
+    public void SetBombTile(TilePosition position) =>
         tileCntrls[position.col, position.row].SetBombTile();
-    }
 
-    public bool IsOpen(TilePosition position)
-    {
-        return (tileCntrls[position.col, position.row].IsTileOpen());
-    }
+    public bool IsOpen(TilePosition position) =>
+        tileCntrls[position.col, position.row].IsTileOpen();
 
-    public void SetTileAsVisted(TilePosition position)
-    {
+    public void SetTileAsVisted(TilePosition position) =>
         tileCntrls[position.col, position.row].SetTileAsVisted();
-    }
 
-    public bool SetMove(TilePosition position, Material color)
-    {
-        return(tileCntrls[position.col, position.row].SetMove(color));
-    }
+    public void Mark(TilePosition position, Material color) =>
+        tileCntrls[position.col, position.row].Mark(color);
+
+    public bool TestValid(TilePosition position) =>
+       tileCntrls[position.col, position.row].TestValid();
 
     public void ResetTile(TilePosition position) =>
         tileCntrls[position.col, position.row].ResetTile();

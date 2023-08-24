@@ -29,6 +29,11 @@ public class GameManagerCntrl : MonoBehaviour
         boardCntrl.Initialize();
     }
 
+    public void ReduceHealth()
+    {
+        uiCntrl.ReduceHealth();
+    }
+
     public void StartNewGame()
     {
         Stack<Move> moves = boardCntrl.StartNewGame();

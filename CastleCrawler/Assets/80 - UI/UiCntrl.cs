@@ -16,10 +16,16 @@ public class UiCntrl : MonoBehaviour
     [SerializeField] private Image star1On;
     [SerializeField] private Image star2On;
     [SerializeField] private Image star3On;
+    [SerializeField] private Image heart0;
+    [SerializeField] private Image heart1;
+    [SerializeField] private Image heart2;
 
     private Dictionary<string, DirBtnCntrl> dirBtnDict;
 
     private List<GameObject> listOfDirBtns = null;
+
+    private Image[] hearts = new Image[3];
+    private int heartCnt = 0;
 
     private int starCnt = 0;
     private int levelCnt = 0;
@@ -30,6 +36,10 @@ public class UiCntrl : MonoBehaviour
         loseFlag.SetActive(false);
         levelCntText.text = gameData.level.ToString();
         levelCnt = gameData.level;
+
+        hearts[0] = heart0;
+        hearts[1] = heart1;
+        hearts[2] = heart2;
 
         listOfDirBtns = new List<GameObject>();
     }
@@ -90,6 +100,11 @@ public class UiCntrl : MonoBehaviour
         StartCoroutine(ShowWinnerFlag());
 
         UpdateLevel();
+    }
+
+    public void ReduceHealth()
+    {
+        hearts[heartCnt++].enabled = false;
     }
 
     private IEnumerator ShowWinnerFlag()

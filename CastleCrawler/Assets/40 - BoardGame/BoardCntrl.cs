@@ -62,7 +62,7 @@ public class BoardCntrl : MonoBehaviour
     {
         bool valid = true;
         Stack<TilePosition> tracking = new Stack<TilePosition>();
-        TilePosition backTrack = new TilePosition(currentPlayPos);
+        TilePosition startingTile = new TilePosition(currentPlayPos);
 
         for (int move = 0; (move < moveName.Length) && valid; move++)
         {
@@ -82,26 +82,26 @@ public class BoardCntrl : MonoBehaviour
                     break;
             }
 
-            valid = tileMngr.SetMove(currentPlayPos, color);
+            valid = tileMngr.TestValid(currentPlayPos);
 
             if (valid)
             {
-                tracking.Push(currentPlayPos);
+                tracking.Push(new TilePosition(currentPlayPos));
             }
         }
 
         if (valid)
         {
             moveStack.Push(moveName);
-        } 
-        else
-        {
-            currentPlayPos = backTrack;
 
             foreach (TilePosition position in tracking)
             {
-                tileMngr.ResetTile(position);
+                tileMngr.Mark(position, color);
             }
+        } 
+        else
+        {
+            currentPlayPos = new TilePosition(startingTile);
         }
 
         return (valid);

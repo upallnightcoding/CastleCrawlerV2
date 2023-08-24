@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 207744b42e8f1dc40981c54dc5e74ea2, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  level: 3
+  bombMaterial: {fileID: 2100000, guid: 485b33fc5be065a42bd5269b5a258118, type: 2}
+  crownMaterial: {fileID: 2100000, guid: 7c6e230b4ce049441b897c61d176d5e6, type: 2}
+  castelMaterial: {fileID: 2100000, guid: 363bb94da8b45464c83124cdb21059b9, type: 2}
+  level: 7
   safeGuardLimit: 500
+  debugSw: 1
   listOfMoves:
   - N
   - S
