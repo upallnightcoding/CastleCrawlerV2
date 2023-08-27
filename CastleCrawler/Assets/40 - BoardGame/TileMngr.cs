@@ -50,8 +50,22 @@ public class TileMngr : MonoBehaviour
     public void Mark(TilePosition position, Material color) =>
         tileCntrls[position.col, position.row].Mark(color);
 
-    public bool TestValid(TilePosition position) =>
-       tileCntrls[position.col, position.row].TestValid();
+    public bool IsMoveValid(TilePosition position)
+    {
+        bool offTheBoard = IsOffTheBoard(position);
+        bool valid = false;
+
+        if (offTheBoard)
+        {
+            GameManagerCntrl.Instance.DisplayIllegalMoveBanner();
+        } 
+        else
+        {
+            valid = tileCntrls[position.col, position.row].IsValidTile();
+        }
+
+        return (!offTheBoard && valid);
+    }
 
     public void ResetTile(TilePosition position) =>
         tileCntrls[position.col, position.row].ResetTile();
@@ -61,4 +75,17 @@ public class TileMngr : MonoBehaviour
 
     public void SetEndingTile(TilePosition position) =>
         tileCntrls[position.col, position.row].SetEndingTile();
+
+    /*************************/
+    /*** Private Functions ***/
+    /*************************/
+
+    private bool IsOffTheBoard(TilePosition position)
+    {
+        bool colOutOfRange = (position.col >= GameData.height) || (position.col < 0);
+        bool rowOutOfRange = (position.row >= GameData.width) || (position.row < 0);
+
+        return (colOutOfRange || rowOutOfRange);
+    }
+
 }

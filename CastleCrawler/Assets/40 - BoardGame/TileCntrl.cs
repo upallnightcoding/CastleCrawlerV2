@@ -8,7 +8,6 @@ public class TileCntrl : MonoBehaviour
 {
     [SerializeField] private GameData gameData;
     [SerializeField] private TMP_Text tileLabel;
-    [SerializeField] private GameObject bombFx;
     [SerializeField] private Image image;
 
     private TileState state = TileState.OPEN;
@@ -20,15 +19,15 @@ public class TileCntrl : MonoBehaviour
     public void SetStartingTile()
     {
         SetTile(TileState.START, gameData.StartEndTileColor);
+        image.sprite = gameData.crownSprite;
+        image.gameObject.SetActive(true);
     }
 
     public void SetEndingTile()
     {
         SetTile(TileState.END, gameData.StartEndTileColor);
-        //image.enabled = true;
+        image.sprite = gameData.castleSprite;
         image.gameObject.SetActive(true);
-        //image.sprite = gameData.castelMaterial.mainTexture;
-        //GetComponent<Renderer>().material = gameData.castelMaterial;
     }
 
     public void SetBombTile()
@@ -52,27 +51,24 @@ public class TileCntrl : MonoBehaviour
 
     public void UndoTile()
     {
-        //state = TileState.OPEN;
-        //GetComponent<Renderer>().material = gameData.TileGray;
-        //SetTile(TileState.OPEN, gameData.TileGray);
         ResetTile();
     }
 
-    public bool TestValid()
+    public bool IsValidTile()
     {
         bool valid = true;
 
         switch(state)
         {
             case TileState.BOMB:
-                Instantiate(bombFx, gameObject.transform.position, Quaternion.identity);
                 GetComponent<Renderer>().material = gameData.bombMaterial;
-                GameManagerCntrl.Instance.ReduceHealth();
+                GameManagerCntrl.Instance.FxMovedInPathOfBomb(gameObject.transform.position);
                 valid = false;
                 break;
             case TileState.START:
-            case TileState.END:
             case TileState.PATH:
+            //case TileState.END:
+            case TileState.MARK:
                 valid = false;
                 break;
         }

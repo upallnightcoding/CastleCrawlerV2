@@ -10,8 +10,9 @@ public class UiCntrl : MonoBehaviour
     [SerializeField] private Transform dirBtnContainer;
     [SerializeField] private GameObject dirBtnPreFab;
     [SerializeField] private GameData gameData;
-    [SerializeField] private GameObject winFlag;
-    [SerializeField] private GameObject loseFlag;
+    [SerializeField] private GameObject winBanner;
+    [SerializeField] private GameObject loseBanner;
+    [SerializeField] private GameObject illegalMoveBanner;
     [SerializeField] private TMP_Text levelCntText;
     [SerializeField] private Image star1On;
     [SerializeField] private Image star2On;
@@ -25,15 +26,15 @@ public class UiCntrl : MonoBehaviour
     private List<GameObject> listOfDirBtns = null;
 
     private Image[] hearts = new Image[3];
-    private int heartCnt = 0;
+    private int heartCnt = 2;
 
     private int starCnt = 0;
     private int levelCnt = 0;
 
     void Start()
     {
-        winFlag.SetActive(false);
-        loseFlag.SetActive(false);
+        winBanner.SetActive(false);
+        loseBanner.SetActive(false);
         levelCntText.text = gameData.level.ToString();
         levelCnt = gameData.level;
 
@@ -95,25 +96,17 @@ public class UiCntrl : MonoBehaviour
         return (total == 0);
     }
 
-    public void TriggerWin()
-    {
-        StartCoroutine(ShowWinnerFlag());
-
-        UpdateLevel();
-    }
-
     public void ReduceHealth()
     {
-        hearts[heartCnt++].enabled = false;
-    }
+        if (heartCnt >= 0)
+        {
+            hearts[heartCnt--].enabled = false;
 
-    private IEnumerator ShowWinnerFlag()
-    {
-        winFlag.SetActive(true);
-
-        yield return new WaitForSeconds(3);
-
-        winFlag.SetActive(false);
+            if (heartCnt < 0)
+            {
+                DisplayLooseBanner();
+            }
+        } 
     }
 
     public void OnPlayerMove(string moveName)
@@ -129,6 +122,69 @@ public class UiCntrl : MonoBehaviour
     public void UndoPlayerMove(string moveName)
     {
         dirBtnDict[moveName].UndoPlayerMove();
+    }
+
+    /******************************/
+    /*** Render Banner Routines ***/
+    /******************************/
+
+    public void DisplayWinBanner()
+    {
+        StartCoroutine(DisplayBanner(Banners.WIN));
+
+        UpdateLevel();
+    }
+
+    public void DisplayLooseBanner()
+    {
+        StartCoroutine(DisplayBanner(Banners.LOOSE));
+    }
+
+    public void DisplayIllegalMoveBanner()
+    {
+        StartCoroutine(DisplayBanner(Banners.ILLEGAL));
+    }
+
+    /*************************/
+    /*** Private Functions ***/
+    /*************************/
+
+    /*private IEnumerator ShowBanner()
+    {
+        winBanner.SetActive(true);
+
+        yield return new WaitForSeconds(3);
+
+        winBanner.SetActive(false);
+    }*/
+
+    private IEnumerator DisplayBanner(Banners banner)
+    {
+        DisplayBanner(banner, true);
+
+        yield return new WaitForSeconds(3);
+
+        DisplayBanner(banner, false);
+    }
+
+    private void DisplayBanner(Banners banner, bool offon)
+    {
+        GameObject bannerGameObject = null;
+
+        switch(banner)
+        {
+            case Banners.LOOSE:
+                bannerGameObject = loseBanner;
+                break;
+            case Banners.WIN:
+                bannerGameObject = winBanner;
+                break;
+            case Banners.ILLEGAL:
+                bannerGameObject = illegalMoveBanner;
+                break;
+        }
+
+        bannerGameObject.SetActive(offon);
     }
 
     private void UpdateLevel()
@@ -160,4 +216,11 @@ public class UiCntrl : MonoBehaviour
                 break;
         }
     }
+}
+
+public enum Banners
+{
+    LOOSE,
+    WIN,
+    ILLEGAL
 }

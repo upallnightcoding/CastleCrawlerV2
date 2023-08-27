@@ -12,6 +12,8 @@ public class GameManagerCntrl : MonoBehaviour
 
     private bool displayPath = false;
 
+    private FxCntrl fxCntrl = null;
+
     public void Awake()
     {
         if (Instance == null)
@@ -26,19 +28,9 @@ public class GameManagerCntrl : MonoBehaviour
 
     public void Start()
     {
+        fxCntrl = GetComponent<FxCntrl>();
+
         boardCntrl.Initialize();
-    }
-
-    public void ReduceHealth()
-    {
-        uiCntrl.ReduceHealth();
-    }
-
-    public void StartNewGame()
-    {
-        Stack<Move> moves = boardCntrl.StartNewGame();
-
-        uiCntrl.StartNewGame(moves);
     }
 
     public void TogglePath()
@@ -51,6 +43,38 @@ public class GameManagerCntrl : MonoBehaviour
         return (displayPath ? gameData.StartEndTileColor : gameData.TileGray);
     }
 
+    public void DisplayIllegalMoveBanner()
+    {
+        uiCntrl.DisplayIllegalMoveBanner();
+    }
+
+    /***********************************/
+    /*** Fx Particle Systems & Sound ***/
+    /***********************************/
+
+    public void FxMovedInPathOfBomb(Vector3 position)
+    {
+        fxCntrl.Bomb(position);
+
+        ReduceHealth();
+    }
+
+    public void ReduceHealth()
+    {
+        uiCntrl.ReduceHealth();
+    }
+
+    /*********************/
+    /*** Button Events ***/
+    /*********************/
+
+    public void OnStartNewGame()
+    {
+        Stack<Move> moves = boardCntrl.StartNewGame();
+
+        uiCntrl.StartNewGame(moves);
+    }
+
     public void OnPlayerMove(string move, Material color)
     {
         if (uiCntrl.IsDirBtnEnabled(move))
@@ -61,13 +85,13 @@ public class GameManagerCntrl : MonoBehaviour
 
                 if (boardCntrl.IsFinished() && uiCntrl.TotalPointsIsZero())
                 {
-                    uiCntrl.TriggerWin();
+                    uiCntrl.DisplayWinBanner();
                 }
             }
         }
     }
 
-    public void UndoPlayerMove()
+    public void OnUndoPlayerMove()
     {
         string moveName = boardCntrl.UndoPlayerMove();
 

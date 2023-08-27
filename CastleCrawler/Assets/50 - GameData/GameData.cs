@@ -18,22 +18,27 @@ public class GameData : ScriptableObject
     public Material crownMaterial;
     public Material castelMaterial;
 
+    [Header("Sprites")]
+    public Sprite castleSprite;
+    public Sprite crownSprite;
+
     [Header("Game Attributes")]
     public static int width = 10;
     public static int height = 10;
     public int level;
     public int safeGuardLimit;
     public bool debugSw;
+    public int nBombs;
 
     [Header("Moves")]
     public string[] listOfMoves;
 
     [Header("Materials")]
-    public Material TileGreen;
+    //public Material TileGreen;
     public Material StartEndTileColor;
     public Material TileGray;
     public Material BombTileColor;
-    public Material TileBlack;
+    //public Material TileBlack;
 
     public Sprite[] btnSprite;
     public Material[] tileMaterial;

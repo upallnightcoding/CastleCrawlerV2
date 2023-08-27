@@ -13,7 +13,7 @@ public class CmdBtnCntrl : MonoBehaviour
     // Update is called once per frame
     public void StartNewGame()
     {
-        GameManagerCntrl.Instance.StartNewGame();
+        GameManagerCntrl.Instance.OnStartNewGame();
     }
 
     public void TogglePath()

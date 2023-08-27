@@ -48,14 +48,17 @@ public class BoardCntrl : MonoBehaviour
 
     private void PlaceBombs()
     {
-        int nBombs = 30;
-
-        for (int i = 0; i < nBombs; i++)
+        for (int i = 0; i < gameData.nBombs; i++)
         {
             TilePosition bombPosition = SelectRandomPoint();
 
             tileMngr.SetBombTile(bombPosition);
         }
+    }
+
+    private void PlaceProps()
+    {
+
     }
 
     public bool OnPlayerMove(string moveName, Material color)
@@ -82,7 +85,7 @@ public class BoardCntrl : MonoBehaviour
                     break;
             }
 
-            valid = tileMngr.TestValid(currentPlayPos);
+            valid = tileMngr.IsMoveValid(currentPlayPos);
 
             if (valid)
             {
